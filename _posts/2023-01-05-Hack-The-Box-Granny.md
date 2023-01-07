@@ -57,7 +57,7 @@ Nmap done: 1 IP address (1 host up) scanned in 9.51 seconds
 ### WEB PORT - 80
 
 Site shows it's under construction.
-
+![](/assets/Hackthebox/Granny/1.png)
 ### Headers:
 
 ```bash
