@@ -8,8 +8,8 @@ mermaid: true
 toc: true
 comments: true
 ---
-![](/assets/Hackthebox/Active/0.png)
-<img src="/assets/Hackthebox/Active/0.png" width="80%">
+
+<img src="/assets/Hackthebox/Active/0.png" width="85%" height=90%>
 
 ## RECON 
 
