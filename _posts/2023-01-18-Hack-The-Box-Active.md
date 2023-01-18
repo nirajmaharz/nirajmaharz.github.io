@@ -9,7 +9,7 @@ toc: true
 comments: true
 ---
 
-<img src="/assets/Hackthebox/Active/0.png" width="85%" height=90%>
+<img src="/assets/Hackthebox/Active/0.png" width="85%" height="90%">
 
 ## RECON 
 
