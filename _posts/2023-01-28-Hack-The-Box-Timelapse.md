@@ -457,8 +457,7 @@ timelapse\administrator
 ```
 
 ### Reference:
-```
+
 https://www.ibm.com/docs/en/arl/9.7?topic=certification-extracting-certificate-keys-from-pfx-file
 
 https://www.hackingarticles.in/credential-dumpinglaps/
-```
