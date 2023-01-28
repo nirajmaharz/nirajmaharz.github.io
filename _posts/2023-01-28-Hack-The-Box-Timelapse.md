@@ -9,7 +9,7 @@ toc: true
 comments: true
 ---
 
-<img src="/assets/Hackthebox/Timelapse/0.png" width="100%" height="70%">
+![](/assets/Hackthebox/Timelapse/0.png)
 
 ## RECON
 
