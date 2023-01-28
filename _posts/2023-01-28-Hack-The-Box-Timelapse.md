@@ -143,9 +143,6 @@ smb: \HelpDesk\> dir
 
 The "Local Administrator Password Solution" (LAPS) provides management of local account passwords of domain joined computers. Passwords are stored in Active Directory (AD) and protected by ACL, so only eligible users can read it or request its reset.
 
-<br>
-
-
 ### ZIP FILE CRACKING
 
 While trying to unzip the `winrm_backup.zip` file it turns out to be password protected so we will use `fcrackzip` utility to crack the zip file password using `rockyou.txt` wordlist.
@@ -174,7 +171,6 @@ Theres a file `legacyy_dev_auth.pfx` in the zip archive.
 
 A .pfx file is a digital certificate file that is used to authenticate a user or device. It contains the private key and public key for the certificate, as well as any intermediate certificates that are required for trust. PFX files are typically used for secure web connections, email signing and encryption, and other secure communications
 
-<br>
 
 Using `openssl` to extract the key and certificate from the `.pfx` file, it appears to require a password. 
 ```bash
