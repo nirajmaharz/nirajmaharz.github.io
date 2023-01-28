@@ -9,7 +9,7 @@ toc: true
 comments: true
 ---
 
-<img src="/assets/Hackthebox/Timelapse/0.png" width="100%" height="90%">
+<img src="/assets/Hackthebox/Timelapse/0.png" width="100%" height="70%">
 
 ## RECON
 
@@ -141,9 +141,9 @@ smb: \HelpDesk\> dir
 
 ### ABOUT LAPS
 
-```
 The "Local Administrator Password Solution" (LAPS) provides management of local account passwords of domain joined computers. Passwords are stored in Active Directory (AD) and protected by ACL, so only eligible users can read it or request its reset.
-```
+
+<br>
 
 
 ### ZIP FILE CRACKING
@@ -171,10 +171,10 @@ Archive:  winrm_backup.zip
 Theres a file `legacyy_dev_auth.pfx` in the zip archive.
 
 ### ABOUT PFX FILE EXTENSION
-```
+
 A .pfx file is a digital certificate file that is used to authenticate a user or device. It contains the private key and public key for the certificate, as well as any intermediate certificates that are required for trust. PFX files are typically used for secure web connections, email signing and encryption, and other secure communications
 
-```
+<br>
 
 Using `openssl` to extract the key and certificate from the `.pfx` file, it appears to require a password. 
 ```bash
