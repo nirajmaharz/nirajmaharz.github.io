@@ -9,8 +9,14 @@ toc: true
 comments: true
 ---
 
-## RECON
 ![](/assets/Hackthebox/Return/0.png)
+
+
+Return was an easy box that involved exploiting a printer's web administration panel to obtain LDAP credentials.
+These credentials can then be used to access WinRM. The account obtained through this method is part of the Server Operators group,
+which gives it the ability to control and manipulate services. This privilege will be used to gain a shell with SYSTEM level access
+
+## RECON
 
 ### NMAP
 
