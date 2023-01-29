@@ -317,7 +317,7 @@ The easiest way is to use the /B option to run Robocopy in "backup mode" which t
     Dirs :         1         0         1         0         0         0
    Files :         2         1         1         0         0         0
    Bytes :       316        34       282         0         0         0
-   Times :   0:00:00   0:00:00                       0:00:00   0:00:00
+   Times :   0:00:00   0:00:00                       00:00:00   0:00:00
    Ended : Saturday, January 28, 2023 8:45:40 AM
 
 *Evil-WinRM* PS C:\Users\svc-printer\Desktop> cd C:\programdata\temp
