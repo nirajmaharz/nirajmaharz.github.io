@@ -62,7 +62,7 @@ Nmap done: 1 IP address (1 host up) scanned in 109.73 seconds
 ## WEB - ENUMERATION
 It presents a login form.
 
-<img src="/assets/Hackthebox/Heist/1.png"  width="100%" height="50%">
+<img src="/assets/Hackthebox/Heist/1.png"  width="60%" height="50%">
 
 tried some basic email and password, it did not work. 
 
