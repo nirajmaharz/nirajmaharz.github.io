@@ -62,7 +62,7 @@ Nmap done: 1 IP address (1 host up) scanned in 109.73 seconds
 ## WEB - ENUMERATION
 It presents a login form.
 
-<img src="/assets/Hackthebox/Heist/1.png"  width="100%" height="80%">
+<img src="/assets/Hackthebox/Heist/1.png"  width="100%" height="50%">
 
 tried some basic email and password, it did not work. 
 
@@ -123,7 +123,7 @@ From the above configuration file we can see there are three password hashes.
 | 0242114B0E143F015F5D1E161713 | Cisco Type 7 |
 | 02375012182C1A1D751618034F36415408 | Cisco Type 7 |
 
-### TYPE  DECRYPT
+### TYPE 7 DECRYPT
 
 `Type 7` password can be decrypted using any online tools. Using this [tool](https://www.firewall.cx/cisco-technical-knowledgebase/cisco-routers/358-cisco-type7-password-crack.html) to decrypt type 7 password.
 
