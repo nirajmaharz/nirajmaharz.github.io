@@ -8,7 +8,7 @@ mermaid: true
 toc: true
 comments: true
 ---
-<img src="/assets/Hackthebox/Heist/0.png"  width="50%" height="50%">
+<img src="/assets/Hackthebox/Heist/0.png"  width="100%" height="80%">
 
 Heist was an easy box that involved some password cracking and dumping Firefox's processes.At first, we found a Cisco configuration file on the website that contained usernames and password hashes. After recovering passwords, we found one that worked to get RPC access, through which we found more usernames.
 We then got a Winrm session from one of these usernames and passwords. We observed that Firefox was running and dumped its process memory to uncover the password for the website, which also happened to be the administrator password for the system.
