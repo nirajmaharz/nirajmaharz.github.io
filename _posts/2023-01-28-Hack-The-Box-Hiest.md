@@ -8,7 +8,7 @@ mermaid: true
 toc: true
 comments: true
 ---
-<img src="/assets/Hackthebox/Heist/0.png"  width="100%" height="80%">
+<img src="/assets/Hackthebox/Heist/0.png"  width="90%" height="70%">
 
 Heist was an easy box that involved some password cracking and dumping Firefox's processes.At first, we found a Cisco configuration file on the website that contained usernames and password hashes. After recovering passwords, we found one that worked to get RPC access, through which we found more usernames.
 We then got a Winrm session from one of these usernames and passwords. We observed that Firefox was running and dumped its process memory to uncover the password for the website, which also happened to be the administrator password for the system.
@@ -62,13 +62,13 @@ Nmap done: 1 IP address (1 host up) scanned in 109.73 seconds
 ## WEB - ENUMERATION
 It presents a login form.
 
-<img src="/assets/Hackthebox/Heist/1.png"  width="50%" height="50%">
+<img src="/assets/Hackthebox/Heist/1.png"  width="100%" height="80%">
 
 tried some basic email and password, it did not work. 
 
 ### LOGIN AS GUEST
 
-<img src="/assets/Hackthebox/Heist/2.png"  width="50%" height="50%">
+<img src="/assets/Hackthebox/Heist/2.png"  width="100%" height="100%">
 
 After login as `guest`, we can see it's some kind of support portal and `hazard` has uploaded cisco router configuration file as an attachment.We can view the configuration file.
 ```
@@ -116,10 +116,11 @@ line vty 0 4
 ```
 
 From the above configuration file we can see there are three password hashes.
+
 | Hash      | Hash Type |
 | ----------- | ----------- |
-| $1$pdQG$o8nrSzsGXeaduXrjlvKc91      | Cisco Type 5 salted md5       |
-| 0242114B0E143F015F5D1E161713   | Cisco Type 7        |
+| $1$pdQG$o8nrSzsGXeaduXrjlvKc91 | Cisco Type 5 salted md5 |
+| 0242114B0E143F015F5D1E161713 | Cisco Type 7 |
 | 02375012182C1A1D751618034F36415408 | Cisco Type 7 |
 
 ### TYPE  DECRYPT
