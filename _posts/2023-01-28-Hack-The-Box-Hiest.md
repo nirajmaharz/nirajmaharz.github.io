@@ -1,5 +1,5 @@
 ---
-title: Hack The Box - Hiest
+title: Hack The Box - Heist
 date: 2023-01-29
 categories: [hackthebox]
 tags: [windows,rpcclient,crackmapexec,impacket-lookupsid,procdump,easy]
@@ -8,9 +8,9 @@ mermaid: true
 toc: true
 comments: true
 ---
-<img src="/assets/Hackthebox/Hiest/0.png"  width="50%" height="50%">
+<img src="/assets/Hackthebox/Heist/0.png"  width="50%" height="50%">
 
-Hiest was an easy box that involved some password cracking and dumping Firefox's processes.At first, we found a Cisco configuration file on the website that contained usernames and password hashes. After recovering passwords, we found one that worked to get RPC access, through which we found more usernames.
+Heist was an easy box that involved some password cracking and dumping Firefox's processes.At first, we found a Cisco configuration file on the website that contained usernames and password hashes. After recovering passwords, we found one that worked to get RPC access, through which we found more usernames.
 We then got a Winrm session from one of these usernames and passwords. We observed that Firefox was running and dumped its process memory to uncover the password for the website, which also happened to be the administrator password for the system.
 
 ## RECON
@@ -24,7 +24,7 @@ Starting with `nmap` it shows few ports open.
 - Port 5985: WinRM
   
 ```bash
-$sudo nmap -sC -sV -p- --min-rate 10000 -oN hiest-all-tcp.nmap 10.10.10.149 
+$sudo nmap -sC -sV -p- --min-rate 10000 -oN Heist-all-tcp.nmap 10.10.10.149 
 [sudo] password for niraz: 
 Starting Nmap 7.92 ( https://nmap.org ) at 2023-01-09 07:32 +0545 
 Nmap scan report for 10.10.10.149 
@@ -62,13 +62,13 @@ Nmap done: 1 IP address (1 host up) scanned in 109.73 seconds
 ## WEB - ENUMERATION
 It presents a login form.
 
-<img src="/assets/Hackthebox/Hiest/1.png"  width="50%" height="50%">
+<img src="/assets/Hackthebox/Heist/1.png"  width="50%" height="50%">
 
 tried some basic email and password, it did not work. 
 
 ### LOGIN AS GUEST
 
-<img src="/assets/Hackthebox/Hiest/2.png"  width="50%" height="50%">
+<img src="/assets/Hackthebox/Heist/2.png"  width="50%" height="50%">
 
 After login as `guest`, we can see it's some kind of support portal and `hazard` has uploaded cisco router configuration file as an attachment.We can view the configuration file.
 ```
