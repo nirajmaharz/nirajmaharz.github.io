@@ -1,6 +1,6 @@
 ---
 title: Hack The Box - Querier
-date: 2022-11-11
+date: 2022-02-05
 categories: [hackthebox]
 tags: [smbclinet,olevba,impacket-mssqlclient,impacket-psexec,impacket-mssqlclient,xp-dirtree,hashcat,medium]
 comments: true
@@ -179,7 +179,7 @@ in file: xl/vbaProject.bin - OLE stream: 'VBA/Sheet1'
 +----------+--------------------+---------------------------------------------+
 ```
 
-### MSSQLCLIENT
+### EASTABLISHING MSSQL CONNECTION THROUGH MSSQLCLIENT
 
 we cab use `mssqlclient.py` from impacket to connect to the database.
 ```bash
@@ -427,7 +427,7 @@ Windows PowerShell
 Copyright (C) Microsoft Corporation. All rights reserved.
 PS C:\Users\mssql-svc\Desktop>
 ```
-importing PowerUp.ps1
+importing `PowerUp.ps1`
 ```
 PS C:\Users\mssql-svc\Desktop>. .\PowerUp.ps1
 ```
@@ -471,7 +471,7 @@ File      : C:\ProgramData\Microsoft\Group
             Policy\History\{31B2F340-016D-11D2-945F-00C04FB984F9}\Machine\Preferences\Groups\Groups.xml
 Check     : Cached GPP Files
 ```
-Here, we got credentials for administratror through `Groups.xml`
+Here, we got credentials for `administratror` through `Groups.xml`
 
 using `impacket-psexec` to login to the `administrator` user.
 ```bash
