@@ -2,7 +2,7 @@
 title: Hack The Box - Querier
 date: 2023-02-05
 categories: [hackthebox]
-tags: [smbclieNt,olevba,impacket-mssqlclient,impacket-psexec,impacket-mssqlclient,xp-dirtree,hashcat,medium]
+tags: [smbclient,olevba,impacket-mssqlclient,impacket-psexec,impacket-mssqlclient,xp-dirtree,hashcat,medium]
 comments: true
 toc: true
 ---
