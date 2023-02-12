@@ -1,6 +1,6 @@
 ---
 title: Hack The Box - Photobomb
-date: 2023-02-012
+date: 2023-02-12
 categories: [hackthebox]
 tags: [linux,easy,path hijack,command injection,photobomb]
 comments: true
