@@ -115,7 +115,7 @@ wizard@photobomb:~/photobomb$
 ```
 
 ## SHELL AS ROOT
-On running `sudo -l`, the output shows that the user `wizard` can run `/opt/cleanup.sh` with `sudo` permissions and withoud password.
+On running `sudo -l`, the output shows that the user `wizard` can run `/opt/cleanup.sh` with `sudo` permissions and without password.
 ```bash
 wizard@photobomb:~$ sudo -l
 sudo -l
@@ -127,7 +127,7 @@ User wizard may run the following commands on photobomb:
     (root) SETENV: NOPASSWD: /opt/cleanup.sh
 ```
 
-### Path hijacking
+### PATH HIJACKING
 ### /opt/cleanup.sh
 
 We cannot edit the contents of `/opt/cleanup.sh` but we can read it.
@@ -148,7 +148,7 @@ fi
 find source_images -type f -name '*.jpg' -exec chown root:root {} \;
 ```
 
-On analysing, the cleaup.sh script we can see that there's a `path hijacking`. Here, all the binaries are referenced with the full path expcet `find`.
+On analysing, the cleaup.sh script we can see that there's a `path hijacking`. Here, all the binaries are referenced with the full path except `find`.
 That means, bash will look for binaries in `$PATH` and find will run from `/usr/bin/find`.
 
 ```bash
