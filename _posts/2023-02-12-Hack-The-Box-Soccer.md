@@ -2,7 +2,7 @@
 title: Hack The Box - Shoppy
 date: 2023-02-12
 categories: [hackthebox]
-tags: [linux,easy,nosql]
+tags: [linux,easy,nosql,docker,hashcat]
 comments: true
 toc: true
 ---
