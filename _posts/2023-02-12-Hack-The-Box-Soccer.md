@@ -8,6 +8,10 @@ toc: true
 ---
 <img src="/assets/Hackthebox/Shoppy/0.png"  width="90%" height="70%">
 
+Shoppy was a easy linux machine, which was vulnerable to NOSQL injection. Exploiting NOSQL injection, we 
+got password hash of all users. After cracking the hash of one user, the Mattermost server was accessed,
+where we discovered one of the users' SSH credentials. After gaining access to the box, the credentials of another user were retrieved from the password-manager binary. After escaping a Docker container, we escalated our privileges to root.
+
 ## RECON
 
 ### NMAP
@@ -15,6 +19,7 @@ toc: true
 Starting with `nmap`, nmap shows only port `22(ssh)` , `80(http)`  are open.
 - port22: OpenSSH
 - port80: nginx1.23.1: redirects tohttp://shoppy.htb
+
 ```bash
 $sudo nmap 10.10.11.180 
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-12-16 12:40 +0545 
