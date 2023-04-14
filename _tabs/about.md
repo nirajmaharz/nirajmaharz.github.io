@@ -16,6 +16,7 @@ This blog's objective is to keep a record of everything I learn.
 4. ElearnSecurity Junior Penetration Tester(EJPTv2)
 5. Certified Ethical Hacker(CEH Practical)
 6. (ISC)² Certified in Cyber Security(CC)
+7. Red Hat Certified System Administrator (RHCSAv9)
 
 more to go...
 
