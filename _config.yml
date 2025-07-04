@@ -16,14 +16,14 @@ lang: en
 prefer_datetime_locale:
 
 # Change to your timezone › http://www.timezoneconverter.com/cgi-bin/findzone/findzone
-timezone: Asia/Kathmandu
+timezone: America/Detroit
 
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
 title: Niraj Maharjan                          # the main title
 
-tagline: Just Another InfoSec Enthusiast   # it will display as the sub-title
+tagline: InfoSec Enthusiast   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
   Just writing my notes here.
@@ -79,7 +79,7 @@ google_analytics:
 #     light  - Use the light color scheme
 #     dark   - Use the dark color scheme
 #
-theme_mode: dark
+theme_mode: light
 
 # The CDN endpoint for images.
 # Notice that once it is assigned, the CDN url
