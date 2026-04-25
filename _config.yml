@@ -23,10 +23,10 @@ timezone: America/Detroit
 
 title: Niraj Maharjan                          # the main title
 
-tagline: InfoSec Enthusiast   # it will display as the sub-title
+tagline: Breaking things. Understanding why.   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  Just writing my notes here.
+  Security blog by Niraj Maharjan covering HackTheBox writeups and CTF solutions.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://niraj-maharjan.com.np'
@@ -79,7 +79,7 @@ google_analytics:
 #     light  - Use the light color scheme
 #     dark   - Use the dark color scheme
 #
-theme_mode: light
+theme_mode: dark
 
 # The CDN endpoint for images.
 # Notice that once it is assigned, the CDN url
