@@ -53,28 +53,28 @@ Nmap done: 1 IP address (1 host up) scanned in 22.42 seconds
 #### Port 80
 On port 80, it was only a default apache web page, nothing interesting here.
 
-![alt text](/assets/Proving_grounds/image-1.png)
+![alt text](/assets/Proving_grounds/WallpaperHub/image-1.png)
 
 #### Port 5000
 Port 5000 is hosting a python webserver called wallpaper hub.
 
-![alt text](/assets/Proving_grounds/image.png)
+![alt text](/assets/Proving_grounds/WallpaperHub/image.png)
 
 i was able to register a new user.
 
-![alt text](/assets/Proving_grounds/image-3.png)
+![alt text](/assets/Proving_grounds/WallpaperHub/image-3.png)
 
 Once, i loggedin, i can see a file upload function where i can upload wallpaper.
 
-![alt text](/assets/Proving_grounds/image-4.png)
+![alt text](/assets/Proving_grounds/WallpaperHub/image-4.png)
 
 I'll upload a file and intercept the request and change the filename to `../../../../../etc/passwd`.
 
-![alt text](/assets/Proving_grounds/image-5.png)
+![alt text](/assets/Proving_grounds/WallpaperHub/image-5.png)
 
 The file upload was successful and I can see it under My Uploads.
 
-![alt text](/assets/Proving_grounds/image-6.png)
+![alt text](/assets/Proving_grounds/WallpaperHub/image-6.png)
 
 After downloading the file, i got the contents of `/etc/passwd`.
 
@@ -121,7 +121,7 @@ wp_hub:x:1001:1001::/home/wp_hub:/bin/bash
 
 Next i'll upload a file and rename the file as `../../../../../home/wp_hub/.bash_history`
 
-![alt text](/assets/Proving_grounds/image-7.png)
+![alt text](/assets/Proving_grounds/WallpaperHub/image-7.png)
 
 once the upload is successful, i can download the file that contents the contents of `.bash_history`.
 
@@ -135,7 +135,7 @@ so, there's a `database.db` file in the `/home/wp_hub/wallpaper_hub`.
 Again, i'll upload a new file and rename the filename to `../../../../../home/wp_hub/wallpaper_hub/database.db`.
 
 
-![alt text](/assets/Proving_grounds/image-8.png)
+![alt text](/assets/Proving_grounds/WallpaperHub/image-8.png)
 
 now i can download database.db
 
@@ -154,19 +154,19 @@ using sqlite3, i'll dump the database.
 #sqlite3 wallpapers_.._.._.._.._.._home_wp_hub_wallpaper_hub_database.db .dump
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
-CREATE TABLE /assets/Proving_grounds/image-s (
+CREATE TABLE /assets/Proving_grounds/WallpaperHub/image-s (
             id TEXT PRIMARY KEY,
             user_id INTEGER NOT NULL,
-            /assets/Proving_grounds/image-_path TEXT NOT NULL
+            /assets/Proving_grounds/WallpaperHub/image-_path TEXT NOT NULL
         );
-INSERT INTO /assets/Proving_grounds/image-s VALUES('218b509b-b981-4ff2-aad2-399b02b1901a',0,'wallpapers/photo1.jpg');
-INSERT INTO /assets/Proving_grounds/image-s VALUES('b5d0de64-6266-4f40-ac5f-a64211aa0bab',0,'wallpapers/photo2.jpg');
-INSERT INTO /assets/Proving_grounds/image-s VALUES('397f4e8d-7f9f-4dc1-803a-36a3c1dabf87',0,'wallpapers/photo3.jpg');
-INSERT INTO /assets/Proving_grounds/image-s VALUES('75c34bcb-1fe6-4cbf-a741-ab754731bdef',1,'wallpapers/cmd.php');
-INSERT INTO /assets/Proving_grounds/image-s VALUES('04e63377-5fd7-46f1-b532-13dde17ae0b5',1,'wallpapers/../../../../../etc/passwd');
-INSERT INTO /assets/Proving_grounds/image-s VALUES('b5b5dc6b-4a6c-4463-8faa-3c4571f5d374',1,'wallpapers/cmd.php');
-INSERT INTO /assets/Proving_grounds/image-s VALUES('6027abd6-6829-4c81-915f-9f1dfe651d55',1,'wallpapers/../../../../../home/wp_hub/.bash_history');
-INSERT INTO /assets/Proving_grounds/image-s VALUES('fb8af1d2-e423-4673-8a95-74b2d0d0509e',1,'wallpapers/../../../../../home/wp_hub/wallpaper_hub/database.db');
+INSERT INTO /assets/Proving_grounds/WallpaperHub/image-s VALUES('218b509b-b981-4ff2-aad2-399b02b1901a',0,'wallpapers/photo1.jpg');
+INSERT INTO /assets/Proving_grounds/WallpaperHub/image-s VALUES('b5d0de64-6266-4f40-ac5f-a64211aa0bab',0,'wallpapers/photo2.jpg');
+INSERT INTO /assets/Proving_grounds/WallpaperHub/image-s VALUES('397f4e8d-7f9f-4dc1-803a-36a3c1dabf87',0,'wallpapers/photo3.jpg');
+INSERT INTO /assets/Proving_grounds/WallpaperHub/image-s VALUES('75c34bcb-1fe6-4cbf-a741-ab754731bdef',1,'wallpapers/cmd.php');
+INSERT INTO /assets/Proving_grounds/WallpaperHub/image-s VALUES('04e63377-5fd7-46f1-b532-13dde17ae0b5',1,'wallpapers/../../../../../etc/passwd');
+INSERT INTO /assets/Proving_grounds/WallpaperHub/image-s VALUES('b5b5dc6b-4a6c-4463-8faa-3c4571f5d374',1,'wallpapers/cmd.php');
+INSERT INTO /assets/Proving_grounds/WallpaperHub/image-s VALUES('6027abd6-6829-4c81-915f-9f1dfe651d55',1,'wallpapers/../../../../../home/wp_hub/.bash_history');
+INSERT INTO /assets/Proving_grounds/WallpaperHub/image-s VALUES('fb8af1d2-e423-4673-8a95-74b2d0d0509e',1,'wallpapers/../../../../../home/wp_hub/wallpaper_hub/database.db');
 CREATE TABLE users (
             user_id INTEGER PRIMARY KEY,
             username TEXT NOT NULL,
