@@ -13,7 +13,7 @@ This blog documents my journey through HackTheBox machines, CTFs, and security r
 
 ### Certifications
 
-- Offensive Security Certified Professional (OSCP) - In Progress
+- Offensive Security Certified Professional (OSCP)
 - Certified Red Team Professional (CRTP)
 - Certified Ethical Hacker Practical (CEH Practical)
 - Palo Alto Networks Certified Network Security Administrator (PCNSA)
